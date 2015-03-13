@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2010/12/24 22:20:22.000.186,C:\Users\初音拓海\Documents\RAD Studio\Projects\雀龍門.dproj=C:\Users\初音拓海\Documents\RAD Studio\Projects\Project4.dproj</Transaction>
+    <Transaction>2010/12/24 22:21:29.000.943,E:\程序\HalTe2\GP\雀龍門.dproj=C:\Users\初音拓海\Documents\RAD Studio\Projects\雀龍門.dproj</Transaction>
+    <Transaction>2010/12/24 22:21:52.000.741,=E:\程序\HalTe2\GP\FastShareMem.pas</Transaction>
+    <Transaction>2010/12/24 22:23:26.000.459,=E:\程序\HalTe2\GP\AssistantConst.pas</Transaction>
+    <Transaction>2010/12/24 22:23:26.000.463,=E:\程序\HalTe2\GP\CustomStream.pas</Transaction>
+    <Transaction>2010/12/24 22:23:26.000.454,=E:\程序\HalTe2\GP\PluginFunc.pas</Transaction>
+    <Transaction>2010/12/25 13:39:26.000.391,=E:\程序\HalTe2\GP\雀龍門\Profiling\AQtimeModule1.aqt</Transaction>
+    <Transaction>2010/12/25 14:34:17.000.129,E:\程序\HalTe2\Debug\Win32\GP\oyome\Test.dproj=E:\程序\HalTe2\Debug\Win32\GP\oyome\雀龍門.dproj</Transaction>
+    <Transaction>2010/12/25 15:12:21.000.856,=E:\程序\HalTe2\CustomStream.pas</Transaction>
+    <Transaction>2010/12/25 15:14:24.000.634,=E:\程序\HalTe2\FastShareMem.pas</Transaction>
+    <Transaction>2010/12/25 15:16:54.000.166,=E:\程序\HalTe2\Debug\Win32\GP\oyome\FastShareMem.pas</Transaction>
+    <Transaction>2010/12/25 15:17:36.000.758,E:\程序\HalTe2\Debug\Win32\GP\oyome\Profiling\AQtimeModule1.aqt=</Transaction>
+    <Transaction>2010/12/26 13:41:43.000.244,=E:\程序\HalTe2\PluginFunc.pas</Transaction>
+    <Transaction>2010/12/27 14:20:43.000.876,E:\程序\HalTe2\Debug\Win32\GP\oyome\Test.dproj=E:\程序\HalTe2\Debug\Win32\GP\oyome\SugarPotPlus.dproj</Transaction>
+    <Transaction>2010/12/29 21:30:13.000.838,=E:\程序\HalTe2\FastMM\FastMM4.pas</Transaction>
+    <Transaction>2010/12/29 21:30:13.000.792,=E:\程序\HalTe2\FastMM\FastMM4Messages.pas</Transaction>
+    <Transaction>2010/12/31 18:54:09.000.470,E:\程序\HalTe2\Debug\Win32\GP\TFM\東方幻想麻雀.dproj=E:\程序\HalTe2\Debug\Win32\GP\TFM\SugarPotPlus.dproj</Transaction>
+    <Transaction>2011/01/01 17:14:34.000.520,E:\程序\HalTe2\Debug\Win32\GP\AIMS\東方幻想麻雀.dproj=E:\程序\HalTe2\Debug\Win32\GP\AIMS\AIMS.dproj</Transaction>
+    <Transaction>2011/01/02 13:58:35.000.962,E:\程序\HalTe2\Debug\Win32\GP\SCE\SCE.dproj=E:\程序\HalTe2\Debug\Win32\GP\SCE\AIMS.dproj</Transaction>
+  </Transactions>
+</BorlandProject>

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2010/12/24 22:20:22.000.186,C:\Users\初音拓海\Documents\RAD Studio\Projects\Project4.dproj=C:\Users\初音拓海\Documents\RAD Studio\Projects\雀龍門.dproj</Transaction>
+    <Transaction>2010/12/24 22:21:29.000.943,C:\Users\初音拓海\Documents\RAD Studio\Projects\雀龍門.dproj=E:\程序\HalTe2\GP\雀龍門.dproj</Transaction>
+    <Transaction>2010/12/24 22:21:52.000.741,=E:\程序\HalTe2\GP\FastShareMem.pas</Transaction>
+    <Transaction>2010/12/24 22:23:26.000.463,=E:\程序\HalTe2\GP\CustomStream.pas</Transaction>
+    <Transaction>2010/12/24 22:23:26.000.459,=E:\程序\HalTe2\GP\AssistantConst.pas</Transaction>
+    <Transaction>2010/12/24 22:23:26.000.454,=E:\程序\HalTe2\GP\PluginFunc.pas</Transaction>
+    <Transaction>2010/12/25 13:39:26.000.391,=E:\程序\HalTe2\GP\雀龍門\Profiling\AQtimeModule1.aqt</Transaction>
+    <Transaction>2010/12/26 00:28:10.000.073,=E:\程序\HalTe2\CustomStream.pas</Transaction>
+    <Transaction>2010/12/26 00:30:38.000.511,E:\程序\HalTe2\Debug\Win32\GP\雀龍門\Profiling\AQtimeModule1.aqt=</Transaction>
+    <Transaction>2010/12/27 13:27:28.000.254,=E:\程序\HalTe2\PluginFunc.pas</Transaction>
+    <Transaction>2010/12/29 18:05:41.000.080,E:\程序\HalTe2\Debug\Win32\GP\MPF2.0\MPF2.dproj=E:\程序\HalTe2\Debug\Win32\GP\MPF2.0\雀龍門.dproj</Transaction>
+    <Transaction>2010/12/29 21:29:47.000.682,=E:\程序\HalTe2\FastMM\FastMM4Messages.pas</Transaction>
+    <Transaction>2010/12/29 21:29:47.000.721,=E:\程序\HalTe2\FastMM\FastMM4.pas</Transaction>
+    <Transaction>2010/12/30 18:39:37.000.143,E:\程序\HalTe2\Debug\Win32\GP\AILTeamRiva\AILTeamRiva.dproj=E:\程序\HalTe2\Debug\Win32\GP\AILTeamRiva\MPF2.dproj</Transaction>
+    <Transaction>2011/01/01 21:09:44.000.089,E:\程序\HalTe2\Debug\Win32\GP\新しいフォルダー\AXL.dproj=E:\程序\HalTe2\Debug\Win32\GP\新しいフォルダー\AILTeamRiva.dproj</Transaction>
+    <Transaction>2011/06/06 18:49:28.000.265,E:\程序\HalTe2\Debug\Win32\GP\Snowflake\SnowFlake.dproj=E:\程序\HalTe2\Debug\Win32\GP\Snowflake\AXL.dproj</Transaction>
+  </Transactions>
+</BorlandProject>

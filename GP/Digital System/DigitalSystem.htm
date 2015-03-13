@@ -1,0 +1,402 @@
+<html>
+<head>
+<title>E:\’ö˜\Halte3\Debug\GP\Digital System\DigitalSystem.dpr</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="GENERATOR" content="CnPack Source2Html Wizard (http://www.cnpack.org)">
+<style type="text/css">
+<!--
+body { font-family: "Courier New"; font-size: 10pt;color: #000000 }
+
+.u0 { font-family: "Courier New"; font-size: 10pt;color: #FF0000 }
+.u1 { font-family: "Courier New"; font-size: 10pt; font-style: italic;color: #000080 }
+.u2 { font-family: "Courier New"; font-size: 10pt;color: #0000FF }
+.u3 { font-family: "Courier New"; font-size: 10pt;color: #008000 }
+.u4 { font-family: "Courier New"; font-size: 10pt;color: #000000 }
+.u5 { font-family: "Courier New"; font-size: 10pt; font-weight: bold;color: #000000 }
+.u6 { font-family: "Courier New"; font-size: 10pt;color: #000000 }
+.u7 { font-family: "Courier New"; font-size: 10pt;color: #000000 }
+.u8 { font-family: "Courier New"; font-size: 10pt;color: #0000FF }
+.u9 { font-family: "Courier New"; font-size: 10pt;color: #000000 }
+.u10 { font-family: "Courier New"; font-size: 10pt;color: #0000FF }
+-->
+</style> 
+</head>
+<body bgcolor="#FFFFFF">
+<span class="u5">library</span>&nbsp;<span class="u4">DigitalSystem</span><span class="u9">;</span>
+<br>
+<br><span class="u5">uses</span>
+<br>&nbsp;&nbsp;<span class="u4">FastMM4</span>&nbsp;<span class="u5">in</span>&nbsp;<span class="u8">'..\..\..\FastMM\FastMM4.pas'</span><span class="u9">,</span>
+<br>&nbsp;&nbsp;<span class="u4">SysUtils</span><span class="u9">,</span>
+<br>&nbsp;&nbsp;<span class="u4">Classes</span><span class="u9">,</span>
+<br>&nbsp;&nbsp;<span class="u4">CustomStream</span>&nbsp;<span class="u5">in</span>&nbsp;<span class="u8">'..\..\..\core\CustomStream.pas'</span><span class="u9">,</span>
+<br>&nbsp;&nbsp;<span class="u4">PluginFunc</span>&nbsp;<span class="u5">in</span>&nbsp;<span class="u8">'..\..\..\core\PluginFunc.pas'</span><span class="u9">,</span>
+<br>&nbsp;&nbsp;<span class="u4">Windows</span><span class="u9">,</span>
+<br>&nbsp;&nbsp;<span class="u4">FastMM4Messages</span>&nbsp;<span class="u5">in</span>&nbsp;<span class="u8">'..\..\..\FastMM\FastMM4Messages.pas'</span><span class="u9">,</span>
+<br>&nbsp;&nbsp;<span class="u4">StrUtils</span><span class="u9">,</span>
+<br>&nbsp;&nbsp;<span class="u4">Vcl</span><span class="u9">.</span><span class="u4">Dialogs</span>
+<br><span class="u3">{$IFDEF&nbsp;debug}</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u9">,</span>
+<br>&nbsp;&nbsp;<span class="u4">CodeSiteLogging</span>
+<br><span class="u3">{$ENDIF}</span><span class="u9">;</span>
+<br>
+<br><span class="u3">{$E&nbsp;GP}</span>
+<br><span class="u3">{$R&nbsp;*.res}</span>
+<br>
+<br>
+<br><span class="u5">Type</span>
+<br>&nbsp;&nbsp;<span class="u4">Pack_Head</span>&nbsp;<span class="u9">=</span>&nbsp;<span class="u5">Packed</span>&nbsp;<span class="u5">Record</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">TableOffset</span><span class="u9">:</span>&nbsp;<span class="u4">Cardinal</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">TableLength</span><span class="u9">:</span>&nbsp;<span class="u4">Cardinal</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Unknown_Flag</span><span class="u9">:</span>&nbsp;<span class="u4">Word</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;<span class="u5">End</span><span class="u9">;</span>
+<br>
+<br>&nbsp;&nbsp;<span class="u4">Pack_Entries</span>&nbsp;<span class="u9">=</span>&nbsp;<span class="u5">packed</span>&nbsp;<span class="u5">Record</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Hash</span><span class="u9">:</span>&nbsp;<span class="u4">Word</span><span class="u9">;</span>&nbsp;<span class="u9"></span><span class="u1">//&nbsp;0&nbsp;means&nbsp;end</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">start_offset</span><span class="u9">:</span>&nbsp;<span class="u4">Cardinal</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">length</span><span class="u9">:</span>&nbsp;<span class="u4">Cardinal</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">EncodeFlag</span><span class="u9">:</span>&nbsp;<span class="u4">Word</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;<span class="u5">End</span><span class="u9">;</span>
+<br>
+<br>&nbsp;&nbsp;<span class="u4">TPackageType</span>&nbsp;<span class="u9">=</span>&nbsp;<span class="u9">(</span><span class="u4">ptSE</span><span class="u9">,</span>&nbsp;<span class="u4">ptStr</span><span class="u9">,</span>&nbsp;<span class="u4">ptTAK</span><span class="u9">,</span>&nbsp;<span class="u4">ptVCE</span><span class="u9">,</span>&nbsp;<span class="u4">ptVIS</span><span class="u9">);</span>
+<br>
+<br><span class="u5">function</span>&nbsp;<span class="u4">GetPluginName</span><span class="u9">:</span>&nbsp;<span class="u4">PChar</span><span class="u9">;</span>
+<br><span class="u5">begin</span>
+<br>&nbsp;&nbsp;<span class="u4">Result</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u4">PChar</span><span class="u9">(</span><span class="u4">FormatPluginName</span><span class="u9">(</span><span class="u8">'Digital&nbsp;System'</span><span class="u9">,</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">clEngine</span><span class="u9">));</span>
+<br><span class="u5">end</span><span class="u9">;</span>
+<br>
+<br><span class="u5">function</span>&nbsp;<span class="u4">GetFileName</span><span class="u9">(</span><span class="u4">PackageType</span><span class="u9">:</span>&nbsp;<span class="u4">TPackageType</span><span class="u9">;</span>&nbsp;<span class="u4">Hash</span><span class="u9">:</span>&nbsp;<span class="u4">Word</span><span class="u9">):</span>&nbsp;<span class="u5">string</span><span class="u9">;</span>
+<br><span class="u5">begin</span>
+<br>&nbsp;&nbsp;<span class="u5">case</span>&nbsp;<span class="u4">PackageType</span>&nbsp;<span class="u5">of</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">ptSE</span><span class="u9">:</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Result</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u4">Format</span><span class="u9">(</span><span class="u8">'_SE/_SE%.5d.OGG'</span><span class="u9">,</span>&nbsp;<span class="u9">[</span>&nbsp;<span class="u4">Hash</span>&nbsp;<span class="u9">]);</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">ptStr</span><span class="u9">:</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Result</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u4">Format</span><span class="u9">(</span><span class="u8">'STR/STR%.5d.OGG'</span><span class="u9">,</span>&nbsp;<span class="u9">[</span>&nbsp;<span class="u4">Hash</span>&nbsp;<span class="u9">]);</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">ptTAK</span><span class="u9">:</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Result</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u4">Format</span><span class="u9">(</span><span class="u8">'TAK/TAK%.5d.BIN'</span><span class="u9">,</span>&nbsp;<span class="u9">[</span>&nbsp;<span class="u4">Hash</span>&nbsp;<span class="u9">]);</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">ptVCE</span><span class="u9">:</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Result</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u4">Format</span><span class="u9">(</span><span class="u8">'VCE/VCE%.5d.OGG'</span><span class="u9">,</span>&nbsp;<span class="u9">[</span>&nbsp;<span class="u4">Hash</span>&nbsp;<span class="u9">]);</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">ptVIS</span><span class="u9">:</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Result</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u4">Format</span><span class="u9">(</span><span class="u8">'VIS/VIS%.5d.TMX'</span><span class="u9">,</span>&nbsp;<span class="u9">[</span>&nbsp;<span class="u4">Hash</span>&nbsp;<span class="u9">]);</span>
+<br>&nbsp;&nbsp;<span class="u5">end</span><span class="u9">;</span>
+<br><span class="u5">end</span><span class="u9">;</span>
+<br>
+<br><span class="u5">function</span>&nbsp;<span class="u4">GenerateEntries</span><span class="u9">(</span><span class="u4">IndexStream</span><span class="u9">:</span>&nbsp;<span class="u4">TIndexStream</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;<span class="u4">FileBuffer</span><span class="u9">:</span>&nbsp;<span class="u4">TFileBufferStream</span><span class="u9">):</span>&nbsp;<span class="u4">Boolean</span><span class="u9">;</span>
+<br><span class="u5">var</span>
+<br>&nbsp;&nbsp;<span class="u4">head</span><span class="u9">:</span>&nbsp;<span class="u4">Pack_Head</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;<span class="u4">indexs</span><span class="u9">:</span>&nbsp;<span class="u4">Pack_Entries</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;<span class="u4">i</span><span class="u9">:</span>&nbsp;<span class="u4">integer</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;<span class="u4">Rlentry</span><span class="u9">:</span>&nbsp;<span class="u4">TRlEntry</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;<span class="u4">PackageType</span><span class="u9">:</span>&nbsp;<span class="u4">TPackageType</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;<span class="u4">ExeOffset</span><span class="u9">:</span>&nbsp;<span class="u4">Cardinal</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;<span class="u4">ExePath</span><span class="u9">:</span>&nbsp;<span class="u5">string</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;<span class="u4">FileOpenDialog</span><span class="u9">:</span>&nbsp;<span class="u4">TFileOpenDialog</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;<span class="u4">MyBuffer</span><span class="u9">:</span>&nbsp;<span class="u4">TFileStream</span><span class="u9">;</span>
+<br><span class="u5">begin</span>
+<br>&nbsp;&nbsp;<span class="u4">Result</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u4">True</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;<span class="u5">try</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">FileBuffer</span><span class="u9">.</span><span class="u4">Seek</span><span class="u9">(</span><span class="u6">0</span><span class="u9">,</span>&nbsp;<span class="u4">soFromBeginning</span><span class="u9">);</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">if</span>&nbsp;<span class="u4">SameText</span><span class="u9">(</span><span class="u4">ExtractFileName</span><span class="u9">(</span><span class="u4">FileBuffer</span><span class="u9">.</span><span class="u4">FileName</span><span class="u9">),</span>&nbsp;<span class="u8">'_SE.BIN'</span><span class="u9">)</span>&nbsp;<span class="u5">then</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">PackageType</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u4">ptSE</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">else</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">if</span>&nbsp;<span class="u4">SameText</span><span class="u9">(</span><span class="u4">ExtractFileName</span><span class="u9">(</span><span class="u4">FileBuffer</span><span class="u9">.</span><span class="u4">FileName</span><span class="u9">),</span>&nbsp;<span class="u8">'STR.BIN'</span><span class="u9">)</span>&nbsp;<span class="u5">then</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">PackageType</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u4">ptStr</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">else</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">if</span>&nbsp;<span class="u4">SameText</span><span class="u9">(</span><span class="u4">ExtractFileName</span><span class="u9">(</span><span class="u4">FileBuffer</span><span class="u9">.</span><span class="u4">FileName</span><span class="u9">),</span>&nbsp;<span class="u8">'TAK.BIN'</span><span class="u9">)</span>&nbsp;<span class="u5">then</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">PackageType</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u4">ptTAK</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">else</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">if</span>&nbsp;<span class="u4">SameText</span><span class="u9">(</span><span class="u4">ExtractFileName</span><span class="u9">(</span><span class="u4">FileBuffer</span><span class="u9">.</span><span class="u4">FileName</span><span class="u9">),</span>&nbsp;<span class="u8">'VCE.BIN'</span><span class="u9">)</span>&nbsp;<span class="u5">then</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">PackageType</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u4">ptVCE</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">else</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">if</span>&nbsp;<span class="u4">SameText</span><span class="u9">(</span><span class="u4">ExtractFileName</span><span class="u9">(</span><span class="u4">FileBuffer</span><span class="u9">.</span><span class="u4">FileName</span><span class="u9">),</span>&nbsp;<span class="u8">'VIS.BIN'</span><span class="u9">)</span>&nbsp;<span class="u5">then</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">PackageType</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u4">ptVIS</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">else</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">raise</span>&nbsp;<span class="u4">Exception</span><span class="u9">.</span><span class="u4">Create</span><span class="u9">(</span><span class="u8">'No&nbsp;pattern&nbsp;found.'</span><span class="u9">);</span>
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">case</span>&nbsp;<span class="u4">PackageType</span>&nbsp;<span class="u5">of</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">ptSE</span><span class="u9">:</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">ExeOffset</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u6">$30970</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">ptStr</span><span class="u9">:</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">ExeOffset</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u6">$20870</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">ptTAK</span><span class="u9">:</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">ExeOffset</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u6">$2ECA0</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">ptVCE</span><span class="u9">:</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">ExeOffset</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u6">$30B68</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">ptVIS</span><span class="u9">:</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">ExeOffset</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u6">$2EED8</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">else</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">ExeOffset</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u6">0</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">end</span><span class="u9">;</span>
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">FileOpenDialog</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u4">TFileOpenDialog</span><span class="u9">.</span><span class="u4">Create</span><span class="u9">(</span><span class="u5">nil</span><span class="u9">);</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">try</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">ExeOffset</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u4">StrToIntDef</span><span class="u9">(</span><span class="u4">inputbox</span><span class="u9">(</span><span class="u8">'Need&nbsp;offset'</span><span class="u9">,</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u8">'Table&nbsp;offset&nbsp;stored&nbsp;in&nbsp;exe,u&nbsp;should&nbsp;point&nbsp;it&nbsp;out.'</span><span class="u9">,</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u8">'$'</span>&nbsp;<span class="u9">+</span>&nbsp;<span class="u4">IntTohex</span><span class="u9">(</span><span class="u4">ExeOffset</span><span class="u9">,</span>&nbsp;<span class="u6">8</span><span class="u9">)),</span>&nbsp;<span class="u4">ExeOffset</span><span class="u9">);</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">if</span>&nbsp;<span class="u4">FileOpenDialog</span><span class="u9">.</span><span class="u4">Execute</span>&nbsp;<span class="u5">then</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">ExePath</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u4">FileOpenDialog</span><span class="u9">.</span><span class="u4">FileName</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">else</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">raise</span>&nbsp;<span class="u4">Exception</span><span class="u9">.</span><span class="u4">Create</span><span class="u9">(</span><span class="u8">'Exe&nbsp;path&nbsp;missed.'</span><span class="u9">);</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">finally</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">FileOpenDialog</span><span class="u9">.</span><span class="u4">Free</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">end</span><span class="u9">;</span>
+<br>
+<br><span class="u3">{$IFDEF&nbsp;debug}</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">CodeSite</span><span class="u9">.</span><span class="u4">Send</span><span class="u9">(</span><span class="u8">'ExeOffset:&nbsp;'</span><span class="u9">,</span>&nbsp;<span class="u4">IntTohex</span><span class="u9">(</span><span class="u4">ExeOffset</span><span class="u9">,</span>&nbsp;<span class="u6">8</span><span class="u9">));</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">CodeSite</span><span class="u9">.</span><span class="u4">Send</span><span class="u9">(</span><span class="u8">'ExePath:&nbsp;'</span><span class="u9">,</span>&nbsp;<span class="u4">ExePath</span><span class="u9">);</span>
+<br><span class="u3">{$ENDIF}</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">MyBuffer</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u4">TFileStream</span><span class="u9">.</span><span class="u4">Create</span><span class="u9">(</span><span class="u4">ExePath</span><span class="u9">,</span>&nbsp;<span class="u4">fmOpenRead</span><span class="u9">);</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">try</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">i</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u4">SizeOf</span><span class="u9">(</span><span class="u4">Pack_Head</span><span class="u9">);</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">MyBuffer</span><span class="u9">.</span><span class="u4">Seek</span><span class="u9">(</span><span class="u4">ExeOffset</span><span class="u9">,</span>&nbsp;<span class="u4">soFromBeginning</span><span class="u9">);</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">MyBuffer</span><span class="u9">.</span><span class="u4">Read</span><span class="u9">(</span><span class="u4">head</span><span class="u9">.</span><span class="u4">TableOffset</span><span class="u9">,</span>&nbsp;<span class="u4">SizeOf</span><span class="u9">(</span><span class="u4">Pack_Head</span><span class="u9">));</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">indexs</span><span class="u9">.</span><span class="u4">Hash</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u6">1</span><span class="u9">;</span>
+<br>
+<br><span class="u3">{$IFDEF&nbsp;debug}</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">CodeSite</span><span class="u9">.</span><span class="u4">Send</span><span class="u9">(</span><span class="u8">'TableOffset:&nbsp;'</span><span class="u9">,</span>&nbsp;<span class="u4">head</span><span class="u9">.</span><span class="u4">TableOffset</span><span class="u9">);</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">CodeSite</span><span class="u9">.</span><span class="u4">Send</span><span class="u9">(</span><span class="u8">'TableLength:&nbsp;'</span><span class="u9">,</span>&nbsp;<span class="u4">head</span><span class="u9">.</span><span class="u4">TableLength</span><span class="u9">);</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">CodeSite</span><span class="u9">.</span><span class="u4">Send</span><span class="u9">(</span><span class="u8">'Unknown_Flag:&nbsp;'</span><span class="u9">,</span>&nbsp;<span class="u4">head</span><span class="u9">.</span><span class="u4">Unknown_Flag</span><span class="u9">);</span>
+<br><span class="u3">{$ENDIF}</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">while</span>&nbsp;<span class="u9">(</span><span class="u4">indexs</span><span class="u9">.</span><span class="u4">Hash</span>&nbsp;<span class="u9">&lt;&gt;</span>&nbsp;<span class="u6">0</span><span class="u9">)</span>&nbsp;<span class="u5">and</span>&nbsp;<span class="u9">(</span><span class="u4">i</span>&nbsp;<span class="u9">&lt;</span>&nbsp;<span class="u4">head</span><span class="u9">.</span><span class="u4">TableLength</span><span class="u9">)</span>&nbsp;<span class="u5">do</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">begin</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">MyBuffer</span><span class="u9">.</span><span class="u4">Read</span><span class="u9">(</span><span class="u4">indexs</span><span class="u9">.</span><span class="u4">Hash</span><span class="u9">,</span>&nbsp;<span class="u4">SizeOf</span><span class="u9">(</span><span class="u4">Pack_Entries</span><span class="u9">));</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">if</span>&nbsp;<span class="u4">indexs</span><span class="u9">.</span><span class="u4">Hash</span>&nbsp;<span class="u9">=</span>&nbsp;<span class="u6">0</span>&nbsp;<span class="u5">then</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">break</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Rlentry</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u4">TRlEntry</span><span class="u9">.</span><span class="u4">Create</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Rlentry</span><span class="u9">.</span><span class="u4">AName</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u4">Trim</span><span class="u9">(</span><span class="u4">GetFileName</span><span class="u9">(</span><span class="u4">PackageType</span><span class="u9">,</span>&nbsp;<span class="u4">indexs</span><span class="u9">.</span><span class="u4">Hash</span><span class="u9">));</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Rlentry</span><span class="u9">.</span><span class="u4">AOffset</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u4">indexs</span><span class="u9">.</span><span class="u4">start_offset</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Rlentry</span><span class="u9">.</span><span class="u4">AOrigin</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u4">soFromBeginning</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Rlentry</span><span class="u9">.</span><span class="u4">AStoreLength</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u4">indexs</span><span class="u9">.</span><span class="u4">length</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Rlentry</span><span class="u9">.</span><span class="u4">AKey</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u4">indexs</span><span class="u9">.</span><span class="u4">EncodeFlag</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">IndexStream</span><span class="u9">.</span><span class="u4">ADD</span><span class="u9">(</span><span class="u4">Rlentry</span><span class="u9">);</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">i</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u4">i</span>&nbsp;<span class="u9">+</span>&nbsp;<span class="u4">SizeOf</span><span class="u9">(</span><span class="u4">Pack_Entries</span><span class="u9">);</span>
+<br>
+<br><span class="u3">{$IFDEF&nbsp;debug}</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">CodeSite</span><span class="u9">.</span><span class="u4">Send</span><span class="u9">(</span><span class="u8">'Name:&nbsp;'</span><span class="u9">,</span>&nbsp;<span class="u4">Rlentry</span><span class="u9">.</span><span class="u4">AName</span><span class="u9">);</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">CodeSite</span><span class="u9">.</span><span class="u4">Send</span><span class="u9">(</span><span class="u8">'Flag:&nbsp;'</span><span class="u9">,</span>&nbsp;<span class="u4">indexs</span><span class="u9">.</span><span class="u4">EncodeFlag</span><span class="u9">);</span>
+<br><span class="u3">{$ENDIF}</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">end</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">finally</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">MyBuffer</span><span class="u9">.</span><span class="u4">Free</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">end</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;<span class="u5">except</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Result</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u4">False</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;<span class="u5">end</span><span class="u9">;</span>
+<br><span class="u5">end</span><span class="u9">;</span>
+<br>
+<br><span class="u5">type</span>
+<br>&nbsp;&nbsp;<span class="u4">LZS_Head</span>&nbsp;<span class="u9">=</span>&nbsp;<span class="u5">packed</span>&nbsp;<span class="u5">record</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Magic</span><span class="u9">:</span>&nbsp;<span class="u5">array</span>&nbsp;<span class="u9">[</span>&nbsp;<span class="u6">0</span>&nbsp;<span class="u9">..</span>&nbsp;<span class="u6">3</span>&nbsp;<span class="u9">]</span>&nbsp;<span class="u5">of</span>&nbsp;<span class="u4">AnsiChar</span><span class="u9">;</span>&nbsp;<span class="u9"></span><span class="u1">//&nbsp;LZS</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">length</span><span class="u9">:</span>&nbsp;<span class="u4">Cardinal</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;<span class="u5">end</span><span class="u9">;</span>
+<br>
+<br>&nbsp;&nbsp;<span class="u4">RAW_Head</span>&nbsp;<span class="u9">=</span>&nbsp;<span class="u5">packed</span>&nbsp;<span class="u5">record</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Magic</span><span class="u9">:</span>&nbsp;<span class="u5">array</span>&nbsp;<span class="u9">[</span>&nbsp;<span class="u6">0</span>&nbsp;<span class="u9">..</span>&nbsp;<span class="u6">1</span>&nbsp;<span class="u9">]</span>&nbsp;<span class="u5">of</span>&nbsp;<span class="u4">AnsiChar</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Width</span><span class="u9">:</span>&nbsp;<span class="u4">Word</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Height</span><span class="u9">:</span>&nbsp;<span class="u4">Word</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Flag</span><span class="u9">:</span>&nbsp;<span class="u4">Word</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Reserved</span><span class="u9">:</span>&nbsp;<span class="u4">Cardinal</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Reserved2</span><span class="u9">:</span>&nbsp;<span class="u4">Cardinal</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;<span class="u5">end</span><span class="u9">;</span>
+<br>
+<br>&nbsp;&nbsp;<span class="u4">ARGB</span>&nbsp;<span class="u9">=</span>&nbsp;<span class="u5">packed</span>&nbsp;<span class="u5">record</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">case</span>&nbsp;<span class="u4">Byte</span>&nbsp;<span class="u5">of</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u6">1</span><span class="u9">:</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u9">(</span><span class="u4">ARGB</span><span class="u9">:</span>&nbsp;<span class="u4">Cardinal</span><span class="u9">);</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u6">2</span><span class="u9">:</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u9">(</span><span class="u4">A</span><span class="u9">:</span>&nbsp;<span class="u4">Byte</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">R</span><span class="u9">:</span>&nbsp;<span class="u4">Byte</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">G</span><span class="u9">:</span>&nbsp;<span class="u4">Byte</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">B</span><span class="u9">:</span>&nbsp;<span class="u4">Byte</span><span class="u9">;);</span>
+<br>&nbsp;&nbsp;<span class="u5">end</span><span class="u9">;</span>
+<br>
+<br><span class="u5">procedure</span>&nbsp;<span class="u4">SwapBuffer</span><span class="u9">(</span><span class="u4">input</span><span class="u9">,</span>&nbsp;<span class="u4">output</span><span class="u9">:</span>&nbsp;<span class="u4">TStream</span><span class="u9">;</span>&nbsp;<span class="u4">length</span><span class="u9">:</span>&nbsp;<span class="u4">Cardinal</span><span class="u9">);</span>
+<br><span class="u5">var</span>
+<br>&nbsp;&nbsp;<span class="u4">Sect</span><span class="u9">:</span>&nbsp;<span class="u4">ARGB</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;<span class="u4">i</span><span class="u9">:</span>&nbsp;<span class="u4">integer</span><span class="u9">;</span>
+<br><span class="u5">begin</span>
+<br>&nbsp;&nbsp;<span class="u4">i</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u6">0</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;<span class="u5">while</span>&nbsp;<span class="u4">i</span>&nbsp;<span class="u9">&lt;</span>&nbsp;<span class="u4">length</span>&nbsp;<span class="u5">do</span>
+<br>&nbsp;&nbsp;<span class="u5">begin</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">input</span><span class="u9">.</span><span class="u4">Read</span><span class="u9">(</span><span class="u4">Sect</span><span class="u9">.</span><span class="u4">ARGB</span><span class="u9">,</span>&nbsp;<span class="u4">SizeOf</span><span class="u9">(</span><span class="u4">ARGB</span><span class="u9">));</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">output</span><span class="u9">.</span><span class="u5">Write</span><span class="u9">(</span><span class="u4">Sect</span><span class="u9">.</span><span class="u4">B</span><span class="u9">,</span>&nbsp;<span class="u6">1</span><span class="u9">);</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">output</span><span class="u9">.</span><span class="u5">Write</span><span class="u9">(</span><span class="u4">Sect</span><span class="u9">.</span><span class="u4">G</span><span class="u9">,</span>&nbsp;<span class="u6">1</span><span class="u9">);</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">output</span><span class="u9">.</span><span class="u5">Write</span><span class="u9">(</span><span class="u4">Sect</span><span class="u9">.</span><span class="u4">R</span><span class="u9">,</span>&nbsp;<span class="u6">1</span><span class="u9">);</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">output</span><span class="u9">.</span><span class="u5">Write</span><span class="u9">(</span><span class="u4">Sect</span><span class="u9">.</span><span class="u4">A</span><span class="u9">,</span>&nbsp;<span class="u6">1</span><span class="u9">);</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">i</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u4">i</span>&nbsp;<span class="u9">+</span>&nbsp;<span class="u6">4</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;<span class="u5">end</span><span class="u9">;</span>
+<br><span class="u5">end</span><span class="u9">;</span>
+<br>
+<br><span class="u5">procedure</span>&nbsp;<span class="u4">MixPicture</span><span class="u9">(</span><span class="u4">input</span><span class="u9">,</span>&nbsp;<span class="u4">output</span><span class="u9">:</span>&nbsp;<span class="u4">TStream</span><span class="u9">;</span>&nbsp;<span class="u4">Width</span><span class="u9">,</span>&nbsp;<span class="u4">Height</span><span class="u9">:</span>&nbsp;<span class="u4">Cardinal</span><span class="u9">);</span>
+<br><span class="u5">var</span>
+<br>&nbsp;&nbsp;<span class="u4">ipos</span><span class="u9">:</span>&nbsp;<span class="u4">Int64</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;<span class="u4">i</span><span class="u9">,</span>&nbsp;<span class="u4">j</span><span class="u9">,</span>&nbsp;<span class="u4">k</span><span class="u9">:</span>&nbsp;<span class="u4">integer</span><span class="u9">;</span>
+<br><span class="u5">begin</span>
+<br>&nbsp;&nbsp;<span class="u4">ipos</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u4">input</span><span class="u9">.</span><span class="u4">Position</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;<span class="u1">{&nbsp;for&nbsp;i&nbsp;:=&nbsp;Height&nbsp;-&nbsp;1&nbsp;downto&nbsp;0&nbsp;do</span>
+<br><span class="u1">&nbsp;&nbsp;&nbsp;&nbsp;begin</span>
+<br><span class="u1">&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;k&nbsp;:=&nbsp;$100&nbsp;-&nbsp;1&nbsp;downto&nbsp;0&nbsp;do</span>
+<br><span class="u1">&nbsp;&nbsp;&nbsp;&nbsp;begin</span>
+<br><span class="u1">&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;j&nbsp;:=&nbsp;0&nbsp;to&nbsp;Width&nbsp;-&nbsp;1&nbsp;do</span>
+<br><span class="u1">&nbsp;&nbsp;&nbsp;&nbsp;begin</span>
+<br><span class="u1">&nbsp;&nbsp;&nbsp;&nbsp;input.Seek(ipos&nbsp;+&nbsp;(i&nbsp;*&nbsp;Width&nbsp;+&nbsp;j)&nbsp;*&nbsp;$100&nbsp;*&nbsp;$100&nbsp;+&nbsp;k&nbsp;*&nbsp;Width&nbsp;*&nbsp;$100,</span>
+<br><span class="u1">&nbsp;&nbsp;&nbsp;&nbsp;soFromBeginning);</span>
+<br><span class="u1">&nbsp;&nbsp;&nbsp;&nbsp;SwapBuffer(input,&nbsp;output,&nbsp;$100);</span>
+<br><span class="u1">&nbsp;&nbsp;&nbsp;&nbsp;end;</span>
+<br><span class="u1">&nbsp;&nbsp;&nbsp;&nbsp;ipos&nbsp;:=&nbsp;ipos&nbsp;+&nbsp;$100;</span>
+<br><span class="u1">&nbsp;&nbsp;&nbsp;&nbsp;end;</span>
+<br><span class="u1">&nbsp;&nbsp;&nbsp;&nbsp;end;&nbsp;}</span>
+<br>&nbsp;&nbsp;<span class="u5">for</span>&nbsp;<span class="u4">i</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u6">0</span>&nbsp;<span class="u5">to</span>&nbsp;<span class="u4">Height</span>&nbsp;<span class="u9">-</span>&nbsp;<span class="u6">1</span>&nbsp;<span class="u5">do</span>
+<br>&nbsp;&nbsp;<span class="u5">begin</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">for</span>&nbsp;<span class="u4">k</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u6">0</span>&nbsp;<span class="u5">to</span>&nbsp;<span class="u6">$100</span>&nbsp;<span class="u9">-</span>&nbsp;<span class="u6">1</span>&nbsp;<span class="u5">do</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">begin</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">for</span>&nbsp;<span class="u4">j</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u6">0</span>&nbsp;<span class="u5">to</span>&nbsp;<span class="u4">Width</span>&nbsp;<span class="u9">-</span>&nbsp;<span class="u6">1</span>&nbsp;<span class="u5">do</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">begin</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">input</span><span class="u9">.</span><span class="u4">Seek</span><span class="u9">(</span><span class="u4">ipos</span>&nbsp;<span class="u9">+</span>&nbsp;<span class="u9">(</span><span class="u4">i</span>&nbsp;<span class="u9">*</span>&nbsp;<span class="u4">Width</span>&nbsp;<span class="u9">+</span>&nbsp;<span class="u4">j</span><span class="u9">)</span>&nbsp;<span class="u9">*</span>&nbsp;<span class="u6">$100</span>&nbsp;<span class="u9">*</span>&nbsp;<span class="u6">$100</span>&nbsp;<span class="u9">+</span>&nbsp;<span class="u4">k</span>&nbsp;<span class="u9">*</span>&nbsp;<span class="u4">Width</span>&nbsp;<span class="u9">*</span>&nbsp;<span class="u6">$100</span><span class="u9">,</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">soFromBeginning</span><span class="u9">);</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">SwapBuffer</span><span class="u9">(</span><span class="u4">input</span><span class="u9">,</span>&nbsp;<span class="u4">output</span><span class="u9">,</span>&nbsp;<span class="u6">$100</span><span class="u9">);</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">end</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">ipos</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u4">ipos</span>&nbsp;<span class="u9">+</span>&nbsp;<span class="u6">$100</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">end</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;<span class="u5">end</span><span class="u9">;</span>
+<br><span class="u5">end</span><span class="u9">;</span>
+<br>
+<br><span class="u5">function</span>&nbsp;<span class="u4">ReadData</span><span class="u9">(</span><span class="u4">FileBuffer</span><span class="u9">:</span>&nbsp;<span class="u4">TFileBufferStream</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;<span class="u4">OutBuffer</span><span class="u9">:</span>&nbsp;<span class="u4">TStream</span><span class="u9">):</span>&nbsp;<span class="u4">LongInt</span><span class="u9">;</span>
+<br><span class="u5">var</span>
+<br>&nbsp;&nbsp;<span class="u4">Buffer</span><span class="u9">:</span>&nbsp;<span class="u4">TGlCompressBuffer</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;<span class="u4">head</span><span class="u9">:</span>&nbsp;<span class="u4">LZS_Head</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;<span class="u4">Head2</span><span class="u9">:</span>&nbsp;<span class="u4">RAW_Head</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;<span class="u4">Pic_Header_Info</span><span class="u9">:</span>&nbsp;<span class="u4">BITMAPFILEHEADER</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;<span class="u4">Bit_Header_Info</span><span class="u9">:</span>&nbsp;<span class="u4">BITMAPINFOHEADER</span><span class="u9">;</span>
+<br><span class="u5">begin</span>
+<br>&nbsp;&nbsp;<span class="u4">Buffer</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u4">TGlCompressBuffer</span><span class="u9">.</span><span class="u4">Create</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;<span class="u5">try</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">FileBuffer</span><span class="u9">.</span><span class="u4">ReadData</span><span class="u9">(</span><span class="u4">OutBuffer</span><span class="u9">);</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">OutBuffer</span><span class="u9">.</span><span class="u4">Seek</span><span class="u9">(</span><span class="u6">0</span><span class="u9">,</span>&nbsp;<span class="u4">soFromBeginning</span><span class="u9">);</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">OutBuffer</span><span class="u9">.</span><span class="u4">Read</span><span class="u9">(</span><span class="u4">head</span><span class="u9">.</span><span class="u4">Magic</span><span class="u9">[</span>&nbsp;<span class="u6">0</span>&nbsp;<span class="u9">],</span>&nbsp;<span class="u4">SizeOf</span><span class="u9">(</span><span class="u4">LZS_Head</span><span class="u9">));</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">if</span>&nbsp;<span class="u4">SameText</span><span class="u9">(</span><span class="u4">Trim</span><span class="u9">(</span><span class="u4">head</span><span class="u9">.</span><span class="u4">Magic</span><span class="u9">),</span>&nbsp;<span class="u8">'LZS'</span><span class="u9">)</span>&nbsp;<span class="u5">then</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">begin</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Buffer</span><span class="u9">.</span><span class="u4">Seek</span><span class="u9">(</span><span class="u6">0</span><span class="u9">,</span>&nbsp;<span class="u4">soFromBeginning</span><span class="u9">);</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Buffer</span><span class="u9">.</span><span class="u4">CopyFrom</span><span class="u9">(</span><span class="u4">OutBuffer</span><span class="u9">,</span>&nbsp;<span class="u4">OutBuffer</span><span class="u9">.</span><span class="u4">Size</span>&nbsp;<span class="u9">-</span>&nbsp;<span class="u4">SizeOf</span><span class="u9">(</span><span class="u4">LZS_Head</span><span class="u9">));</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Buffer</span><span class="u9">.</span><span class="u4">Seek</span><span class="u9">(</span><span class="u6">0</span><span class="u9">,</span>&nbsp;<span class="u4">soFromBeginning</span><span class="u9">);</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Buffer</span><span class="u9">.</span><span class="u4">LzssDecompress</span><span class="u9">(</span><span class="u4">Buffer</span><span class="u9">.</span><span class="u4">Size</span><span class="u9">,</span>&nbsp;<span class="u6">$FEE</span><span class="u9">,</span>&nbsp;<span class="u6">$FFF</span><span class="u9">);</span>
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Buffer</span><span class="u9">.</span><span class="u4">output</span><span class="u9">.</span><span class="u4">Seek</span><span class="u9">(</span><span class="u6">0</span><span class="u9">,</span>&nbsp;<span class="u4">soFromBeginning</span><span class="u9">);</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">OutBuffer</span><span class="u9">.</span><span class="u4">Size</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u6">0</span><span class="u9">;</span>
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Buffer</span><span class="u9">.</span><span class="u4">output</span><span class="u9">.</span><span class="u4">Read</span><span class="u9">(</span><span class="u4">Head2</span><span class="u9">.</span><span class="u4">Magic</span><span class="u9">[</span>&nbsp;<span class="u6">0</span>&nbsp;<span class="u9">],</span>&nbsp;<span class="u4">SizeOf</span><span class="u9">(</span><span class="u4">RAW_Head</span><span class="u9">));</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">if</span>&nbsp;<span class="u4">Head2</span><span class="u9">.</span><span class="u4">Flag</span>&nbsp;<span class="u9">=</span>&nbsp;<span class="u6">1</span>&nbsp;<span class="u5">then</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">begin</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Pic_Header_Info</span><span class="u9">.</span><span class="u4">bfType</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u6">$4D42</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Pic_Header_Info</span><span class="u9">.</span><span class="u4">bfSize</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u4">Head2</span><span class="u9">.</span><span class="u4">Width</span>&nbsp;<span class="u9">*</span>&nbsp;<span class="u4">Head2</span><span class="u9">.</span><span class="u4">Height</span>&nbsp;<span class="u9">*</span>&nbsp;<span class="u6">$10000</span>&nbsp;<span class="u9">+</span>&nbsp;<span class="u6">54</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Pic_Header_Info</span><span class="u9">.</span><span class="u4">bfReserved1</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u6">0</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Pic_Header_Info</span><span class="u9">.</span><span class="u4">bfReserved2</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u6">0</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Pic_Header_Info</span><span class="u9">.</span><span class="u4">bfOffBits</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u6">54</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">FillMemory</span><span class="u9">(@</span><span class="u4">Bit_Header_Info</span><span class="u9">.</span><span class="u4">biSize</span><span class="u9">,</span>&nbsp;<span class="u4">SizeOf</span><span class="u9">(</span><span class="u4">Bit_Header_Info</span><span class="u9">),</span>&nbsp;<span class="u6">0</span><span class="u9">);</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Bit_Header_Info</span><span class="u9">.</span><span class="u4">biSize</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u6">40</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Bit_Header_Info</span><span class="u9">.</span><span class="u4">biWidth</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u4">Head2</span><span class="u9">.</span><span class="u4">Width</span>&nbsp;<span class="u9">*</span>&nbsp;<span class="u6">$100</span>&nbsp;<span class="u5">div</span>&nbsp;<span class="u6">2</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Bit_Header_Info</span><span class="u9">.</span><span class="u4">biHeight</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u4">Head2</span><span class="u9">.</span><span class="u4">Height</span>&nbsp;<span class="u9">*</span>&nbsp;<span class="u6">$100</span>&nbsp;<span class="u5">div</span>&nbsp;<span class="u6">2</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Bit_Header_Info</span><span class="u9">.</span><span class="u4">biPlanes</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u6">1</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Bit_Header_Info</span><span class="u9">.</span><span class="u4">biBitCount</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u6">32</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">OutBuffer</span><span class="u9">.</span><span class="u5">Write</span><span class="u9">(</span><span class="u4">Pic_Header_Info</span><span class="u9">.</span><span class="u4">bfType</span><span class="u9">,</span>&nbsp;<span class="u6">14</span><span class="u9">);</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">OutBuffer</span><span class="u9">.</span><span class="u5">Write</span><span class="u9">(</span><span class="u4">Bit_Header_Info</span><span class="u9">.</span><span class="u4">biSize</span><span class="u9">,</span>&nbsp;<span class="u6">40</span><span class="u9">);</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">MixPicture</span><span class="u9">(</span><span class="u4">Buffer</span><span class="u9">.</span><span class="u4">output</span><span class="u9">,</span>&nbsp;<span class="u4">OutBuffer</span><span class="u9">,</span>&nbsp;<span class="u4">Head2</span><span class="u9">.</span><span class="u4">Width</span><span class="u9">,</span>&nbsp;<span class="u4">Head2</span><span class="u9">.</span><span class="u4">Height</span><span class="u9">);</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u9"></span><span class="u1">//&nbsp;SwapBuffer(Buffer.output,&nbsp;OutBuffer,&nbsp;Pic_Header_Info.bfSize&nbsp;-&nbsp;54);</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">end</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">else</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">begin</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Buffer</span><span class="u9">.</span><span class="u4">output</span><span class="u9">.</span><span class="u4">Seek</span><span class="u9">(</span><span class="u6">0</span><span class="u9">,</span>&nbsp;<span class="u4">soFromBeginning</span><span class="u9">);</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">OutBuffer</span><span class="u9">.</span><span class="u4">CopyFrom</span><span class="u9">(</span><span class="u4">Buffer</span><span class="u9">.</span><span class="u4">output</span><span class="u9">,</span>&nbsp;<span class="u4">Buffer</span><span class="u9">.</span><span class="u4">output</span><span class="u9">.</span><span class="u4">Size</span>&nbsp;<span class="u9">-</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Buffer</span><span class="u9">.</span><span class="u4">output</span><span class="u9">.</span><span class="u4">Position</span><span class="u9">);</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">end</span><span class="u9">;</span>
+<br><span class="u3">{$IFDEF&nbsp;debug}</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">CodeSite</span><span class="u9">.</span><span class="u4">Send</span><span class="u9">(</span><span class="u8">'Len2:&nbsp;'</span><span class="u9">,</span>&nbsp;<span class="u4">Buffer</span><span class="u9">.</span><span class="u4">output</span><span class="u9">.</span><span class="u4">Size</span><span class="u9">);</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">CodeSite</span><span class="u9">.</span><span class="u4">Send</span><span class="u9">(</span><span class="u8">'Size:&nbsp;'</span><span class="u9">,</span>&nbsp;<span class="u4">Pic_Header_Info</span><span class="u9">.</span><span class="u4">bfSize</span>&nbsp;<span class="u9">-</span>&nbsp;<span class="u6">54</span><span class="u9">);</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">CodeSite</span><span class="u9">.</span><span class="u4">Send</span><span class="u9">(</span><span class="u8">'Width:&nbsp;'</span><span class="u9">,</span>&nbsp;<span class="u4">Head2</span><span class="u9">.</span><span class="u4">Width</span><span class="u9">);</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">CodeSite</span><span class="u9">.</span><span class="u4">Send</span><span class="u9">(</span><span class="u8">'Height:&nbsp;'</span><span class="u9">,</span>&nbsp;<span class="u4">Head2</span><span class="u9">.</span><span class="u4">Height</span><span class="u9">);</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">CodeSite</span><span class="u9">.</span><span class="u4">Send</span><span class="u9">(</span><span class="u8">'calced&nbsp;Width:&nbsp;'</span><span class="u9">,</span>&nbsp;<span class="u4">Bit_Header_Info</span><span class="u9">.</span><span class="u4">biWidth</span><span class="u9">);</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">CodeSite</span><span class="u9">.</span><span class="u4">Send</span><span class="u9">(</span><span class="u8">'calced&nbsp;Height:&nbsp;'</span><span class="u9">,</span>&nbsp;<span class="u4">Bit_Header_Info</span><span class="u9">.</span><span class="u4">biHeight</span><span class="u9">);</span>
+<br><span class="u3">{$ENDIF}</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">end</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;<span class="u5">finally</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Buffer</span><span class="u9">.</span><span class="u4">Free</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;<span class="u5">end</span><span class="u9">;</span>
+<br><span class="u5">end</span><span class="u9">;</span>
+<br>
+<br><span class="u5">function</span>&nbsp;<span class="u4">PackProcessData</span><span class="u9">(</span><span class="u4">Rlentry</span><span class="u9">:</span>&nbsp;<span class="u4">TRlEntry</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;<span class="u4">InputBuffer</span><span class="u9">,</span>&nbsp;<span class="u4">FileOutBuffer</span><span class="u9">:</span>&nbsp;<span class="u4">TStream</span><span class="u9">):</span>&nbsp;<span class="u4">Boolean</span><span class="u9">;</span>
+<br><span class="u5">var</span>
+<br>&nbsp;&nbsp;<span class="u4">Compr</span><span class="u9">:</span>&nbsp;<span class="u4">TGlCompressBuffer</span><span class="u9">;</span>
+<br><span class="u5">begin</span>
+<br>&nbsp;&nbsp;<span class="u4">Compr</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u4">TGlCompressBuffer</span><span class="u9">.</span><span class="u4">Create</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;<span class="u5">try</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Compr</span><span class="u9">.</span><span class="u4">Seek</span><span class="u9">(</span><span class="u6">0</span><span class="u9">,</span>&nbsp;<span class="u4">soFromBeginning</span><span class="u9">);</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">with</span>&nbsp;<span class="u4">Rlentry</span>&nbsp;<span class="u5">do</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">begin</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Rlentry</span><span class="u9">.</span><span class="u4">ARLength</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u4">Compr</span><span class="u9">.</span><span class="u4">Size</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Rlentry</span><span class="u9">.</span><span class="u4">AStoreLength</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u4">Rlentry</span><span class="u9">.</span><span class="u4">ARLength</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Rlentry</span><span class="u9">.</span><span class="u4">AOffset</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u4">FileOutBuffer</span><span class="u9">.</span><span class="u4">Position</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u5">end</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">FileOutBuffer</span><span class="u9">.</span><span class="u4">CopyFrom</span><span class="u9">(</span><span class="u4">Compr</span><span class="u9">,</span>&nbsp;<span class="u4">Compr</span><span class="u9">.</span><span class="u4">Size</span><span class="u9">);</span>
+<br>&nbsp;&nbsp;<span class="u5">finally</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">Compr</span><span class="u9">.</span><span class="u4">Free</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;<span class="u5">end</span><span class="u9">;</span>
+<br><span class="u5">end</span><span class="u9">;</span>
+<br>
+<br><span class="u5">function</span>&nbsp;<span class="u4">PackProcessIndex</span><span class="u9">(</span><span class="u4">IndexStream</span><span class="u9">:</span>&nbsp;<span class="u4">TIndexStream</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;<span class="u4">IndexOutBuffer</span><span class="u9">:</span>&nbsp;<span class="u4">TStream</span><span class="u9">):</span>&nbsp;<span class="u4">Boolean</span><span class="u9">;</span>
+<br><span class="u5">var</span>
+<br>&nbsp;&nbsp;<span class="u4">indexs</span><span class="u9">:</span>&nbsp;<span class="u5">array</span>&nbsp;<span class="u5">of</span>&nbsp;<span class="u4">Pack_Entries</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;<span class="u4">i</span><span class="u9">:</span>&nbsp;<span class="u4">integer</span><span class="u9">;</span>
+<br><span class="u5">begin</span>
+<br>&nbsp;&nbsp;<span class="u4">SetLength</span><span class="u9">(</span><span class="u4">indexs</span><span class="u9">,</span>&nbsp;<span class="u4">IndexStream</span><span class="u9">.</span><span class="u4">Count</span><span class="u9">);</span>
+<br>&nbsp;&nbsp;<span class="u4">ZeroMemory</span><span class="u9">(@</span><span class="u4">indexs</span><span class="u9">[</span>&nbsp;<span class="u6">0</span>&nbsp;<span class="u9">].</span><span class="u4">Hash</span><span class="u9">,</span>&nbsp;<span class="u4">IndexStream</span><span class="u9">.</span><span class="u4">Count</span>&nbsp;<span class="u9">*</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">SizeOf</span><span class="u9">(</span><span class="u4">Pack_Entries</span><span class="u9">));</span>
+<br>&nbsp;&nbsp;<span class="u5">for</span>&nbsp;<span class="u4">i</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u6">0</span>&nbsp;<span class="u5">to</span>&nbsp;<span class="u4">IndexStream</span><span class="u9">.</span><span class="u4">Count</span>&nbsp;<span class="u9">-</span>&nbsp;<span class="u6">1</span>&nbsp;<span class="u5">do</span>
+<br>&nbsp;&nbsp;<span class="u5">begin</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">indexs</span><span class="u9">[</span>&nbsp;<span class="u4">i</span>&nbsp;<span class="u9">].</span><span class="u4">start_offset</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u4">IndexStream</span><span class="u9">.</span><span class="u4">Rlentry</span><span class="u9">[</span>&nbsp;<span class="u4">i</span>&nbsp;<span class="u9">].</span><span class="u4">AOffset</span>&nbsp;<span class="u9">+</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">IndexStream</span><span class="u9">.</span><span class="u4">Count</span>&nbsp;<span class="u9">*</span>&nbsp;<span class="u4">SizeOf</span><span class="u9">(</span><span class="u4">Pack_Entries</span><span class="u9">)</span>&nbsp;<span class="u9">+</span>&nbsp;<span class="u4">SizeOf</span><span class="u9">(</span><span class="u4">Pack_Head</span><span class="u9">);</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">indexs</span><span class="u9">[</span>&nbsp;<span class="u4">i</span>&nbsp;<span class="u9">].</span><span class="u4">length</span>&nbsp;<span class="u9">:=</span>&nbsp;<span class="u4">IndexStream</span><span class="u9">.</span><span class="u4">Rlentry</span><span class="u9">[</span>&nbsp;<span class="u4">i</span>&nbsp;<span class="u9">].</span><span class="u4">AStoreLength</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;<span class="u5">end</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;<span class="u4">IndexOutBuffer</span><span class="u9">.</span><span class="u5">Write</span><span class="u9">(</span><span class="u4">indexs</span><span class="u9">[</span>&nbsp;<span class="u6">0</span>&nbsp;<span class="u9">].</span><span class="u4">Hash</span><span class="u9">,</span>&nbsp;<span class="u4">IndexStream</span><span class="u9">.</span><span class="u4">Count</span>&nbsp;<span class="u9">*</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="u4">SizeOf</span><span class="u9">(</span><span class="u4">Pack_Entries</span><span class="u9">));</span>
+<br><span class="u5">end</span><span class="u9">;</span>
+<br>
+<br><span class="u5">function</span>&nbsp;<span class="u4">MakePackage</span><span class="u9">(</span><span class="u4">IndexStream</span><span class="u9">:</span>&nbsp;<span class="u4">TIndexStream</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;<span class="u4">IndexOutBuffer</span><span class="u9">,</span>&nbsp;<span class="u4">FileOutBuffer</span><span class="u9">:</span>&nbsp;<span class="u4">TStream</span><span class="u9">;</span>
+<br>&nbsp;&nbsp;<span class="u4">Package</span><span class="u9">:</span>&nbsp;<span class="u4">TFileBufferStream</span><span class="u9">):</span>&nbsp;<span class="u4">Boolean</span><span class="u9">;</span>
+<br><span class="u5">var</span>
+<br>&nbsp;&nbsp;<span class="u4">head</span><span class="u9">:</span>&nbsp;<span class="u4">Pack_Head</span><span class="u9">;</span>
+<br><span class="u5">begin</span>
+<br>&nbsp;&nbsp;<span class="u4">IndexOutBuffer</span><span class="u9">.</span><span class="u4">Seek</span><span class="u9">(</span><span class="u6">0</span><span class="u9">,</span>&nbsp;<span class="u4">soFromBeginning</span><span class="u9">);</span>
+<br><span class="u4">Package</span><span class="u9">.</span><span class="u4">CopyFrom</span><span class="u9">(</span><span class="u4">IndexOutBuffer</span><span class="u9">,</span>&nbsp;<span class="u4">IndexOutBuffer</span><span class="u9">.</span><span class="u4">Size</span><span class="u9">);</span>
+<br><span class="u4">FileOutBuffer</span><span class="u9">.</span><span class="u4">Seek</span><span class="u9">(</span><span class="u6">0</span><span class="u9">,</span>&nbsp;<span class="u4">soFromBeginning</span><span class="u9">);</span>
+<br><span class="u4">Package</span><span class="u9">.</span><span class="u4">CopyFrom</span><span class="u9">(</span><span class="u4">FileOutBuffer</span><span class="u9">,</span>&nbsp;<span class="u4">FileOutBuffer</span><span class="u9">.</span><span class="u4">Size</span><span class="u9">);</span>
+<br><span class="u5">end</span><span class="u9">;</span>
+<br>
+<br><span class="u5">exports</span>
+<br>&nbsp;&nbsp;<span class="u4">GetPluginName</span><span class="u9">;</span>
+<br>
+<br><span class="u5">exports</span>
+<br>&nbsp;&nbsp;<span class="u4">GenerateEntries</span><span class="u9">;</span>
+<br>
+<br><span class="u5">exports</span>
+<br>&nbsp;&nbsp;<span class="u4">ReadData</span><span class="u9">;</span>
+<br>
+<br><span class="u5">exports</span>
+<br>&nbsp;&nbsp;<span class="u4">PackProcessData</span><span class="u9">;</span>
+<br>
+<br><span class="u5">exports</span>
+<br>&nbsp;&nbsp;<span class="u4">PackProcessIndex</span><span class="u9">;</span>
+<br>
+<br><span class="u5">exports</span>
+<br>&nbsp;&nbsp;<span class="u4">MakePackage</span><span class="u9">;</span>
+<br>
+<br><span class="u5">begin</span>
+<br>
+<br><span class="u5">end</span><span class="u9">.</span>
+<br>
+</body>
+</html>

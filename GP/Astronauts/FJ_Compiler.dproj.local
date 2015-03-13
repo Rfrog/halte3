@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2012/05/01 11:18:21.000.247,E:\程序\Halte3\Debug\GP\Astronauts\Project13.dproj=C:\Users\SakuraTomo\Documents\RAD Studio\Projects\Project11.dproj</Transaction>
+    <Transaction>2012/05/01 21:11:03.000.943,=E:\程序\Halte3\Debug\GP\Astronauts\Unit1.pas</Transaction>
+    <Transaction>2012/05/01 21:11:12.000.379,E:\程序\Halte3\Debug\GP\Astronauts\Compiler_Base.pas=E:\程序\Halte3\Debug\GP\Astronauts\Unit1.pas</Transaction>
+    <Transaction>2012/05/02 14:42:44.000.949,E:\程序\Halte3\Debug\GP\Astronauts\Project13.dproj=E:\程序\Halte3\Debug\GP\Astronauts\FJ_Compiler.dproj</Transaction>
+  </Transactions>
+</BorlandProject>

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2011/06/18 16:37:06.000.595,=C:\Users\初音拓海\Documents\RAD Studio\Projects\Unit6.pas</Transaction>
+    <Transaction>2011/06/18 16:37:35.000.136,C:\Users\初音拓海\Documents\RAD Studio\Projects\Unit6.dfm=C:\Users\初音拓海\Documents\RAD Studio\Projects\HelpBuilder.dfm</Transaction>
+    <Transaction>2011/06/18 16:37:35.000.136,C:\Users\初音拓海\Documents\RAD Studio\Projects\Unit6.pas=C:\Users\初音拓海\Documents\RAD Studio\Projects\HelpBuilder.pas</Transaction>
+    <Transaction>2011/06/18 16:38:00.000.281,C:\Users\初音拓海\Documents\RAD Studio\Projects\HelpBuilder.pas=E:\程序\Halte3\DocumentBuilder\HelpBuilder.pas</Transaction>
+    <Transaction>2011/06/18 16:38:00.000.281,C:\Users\初音拓海\Documents\RAD Studio\Projects\HelpBuilder.dfm=E:\程序\Halte3\DocumentBuilder\HelpBuilder.dfm</Transaction>
+    <Transaction>2011/06/18 16:38:04.000.851,C:\Users\初音拓海\Documents\RAD Studio\Projects\Project15.dproj=E:\程序\Halte3\DocumentBuilder\Project15.dproj</Transaction>
+    <Transaction>2011/06/18 16:38:13.000.727,E:\程序\Halte3\DocumentBuilder\HelpBuilder.dfm=E:\程序\Halte3\DocumentBuilder\DocBuilder.dfm</Transaction>
+    <Transaction>2011/06/18 16:38:13.000.727,E:\程序\Halte3\DocumentBuilder\HelpBuilder.pas=E:\程序\Halte3\DocumentBuilder\DocBuilder.pas</Transaction>
+    <Transaction>2011/06/18 16:38:19.000.009,E:\程序\Halte3\DocumentBuilder\Project15.dproj=E:\程序\Halte3\DocumentBuilder\Doc.dproj</Transaction>
+    <Transaction>2011/06/18 16:40:03.000.734,=E:\程序\Halte3\hDocumentTypes.pas</Transaction>
+  </Transactions>
+</BorlandProject>

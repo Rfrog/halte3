@@ -1,0 +1,48 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{061FF73E-19F1-4EBA-A7D7-EF49B7D34735}</ProjectGuid>
+		</PropertyGroup>
+		<ItemGroup>
+			<Projects Include="Project11.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="雀龍門.dproj">
+				<Dependencies/>
+			</Projects>
+		</ItemGroup>
+		<ProjectExtensions>
+			<Borland.Personality>Default.Personality.12</Borland.Personality>
+			<Borland.ProjectType/>
+			<BorlandProject>
+				<Default.Personality/>
+			</BorlandProject>
+		</ProjectExtensions>
+		<Target Name="Project11">
+			<MSBuild Projects="Project11.dproj"/>
+		</Target>
+		<Target Name="Project11:Clean">
+			<MSBuild Projects="Project11.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="Project11:Make">
+			<MSBuild Projects="Project11.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="雀龍門">
+			<MSBuild Projects="雀龍門.dproj"/>
+		</Target>
+		<Target Name="雀龍門:Clean">
+			<MSBuild Projects="雀龍門.dproj" Targets="Clean"/>
+		</Target>
+		<Target Name="雀龍門:Make">
+			<MSBuild Projects="雀龍門.dproj" Targets="Make"/>
+		</Target>
+		<Target Name="Build">
+			<CallTarget Targets="Project11;雀龍門"/>
+		</Target>
+		<Target Name="Clean">
+			<CallTarget Targets="Project11:Clean;雀龍門:Clean"/>
+		</Target>
+		<Target Name="Make">
+			<CallTarget Targets="Project11:Make;雀龍門:Make"/>
+		</Target>
+		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')" Project="$(BDS)\Bin\CodeGear.Group.Targets"/>
+	</Project>
